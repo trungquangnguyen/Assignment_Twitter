@@ -18,7 +18,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cnb-fK-tGs" userLabel="signIn">
-                                <rect key="frame" x="118" y="273" width="85" height="22"/>
+                                <rect key="frame" x="97" y="273" width="127" height="22"/>
                                 <state key="normal" image="signIn.png"/>
                                 <connections>
                                     <action selector="onSignIn:" destination="BYZ-38-t0r" eventType="touchUpInside" id="2pE-OY-VpI"/>
@@ -31,13 +31,54 @@
                             <constraint firstItem="cnb-fK-tGs" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="p9P-1V-1y9"/>
                         </constraints>
                     </view>
+                    <navigationItem key="navigationItem" id="bgm-y6-K8u"/>
+                    <connections>
+                        <segue destination="i3G-Qr-c0p" kind="modal" identifier="loggedInSegue" id="r71-op-hV8"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="171.19999999999999" y="286.36666666666667"/>
+            <point key="canvasLocation" x="703" y="286"/>
+        </scene>
+        <!--Home Screen-->
+        <scene sceneID="KCs-pz-NrR">
+            <objects>
+                <viewController id="l13-27-Ypw" customClass="HomeScreen" customModule="Twitter" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="LPj-Ei-yNc"/>
+                        <viewControllerLayoutGuide type="bottom" id="eMW-uS-vsH"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="oBB-vU-mYL">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="eFs-oc-FVE"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="fhm-QG-3a9" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1614" y="292"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="SNC-ac-M97">
+            <objects>
+                <navigationController storyboardIdentifier="NavigationControllerHomeScreen" automaticallyAdjustsScrollViewInsets="NO" id="i3G-Qr-c0p" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="Jdh-du-J7w">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="l13-27-Ypw" kind="relationship" relationship="rootViewController" id="kfe-aE-Vvf"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Rvt-dO-wbf" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1082" y="292"/>
         </scene>
     </scenes>
     <resources>
-        <image name="signIn.png" width="85" height="15"/>
+        <image name="signIn.png" width="127" height="22"/>
     </resources>
 </document>

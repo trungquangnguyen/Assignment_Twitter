@@ -20,9 +20,13 @@ class LoginViewController: UIViewController {
     }
     
     // MARK - private Action/method
-
+    
     @IBAction func onSignIn(sender: UIButton) {
-      TwitterClient.sharedInstance.logIn()
+        TwitterClient.sharedInstance.logInWithComplete { (user, error) -> () in
+            if user != nil {
+                self.performSegueWithIdentifier("loggedInSegue", sender: self)
+            }
+        }
     }
 
 }
