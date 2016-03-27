@@ -8,6 +8,7 @@
 
 import UIKit
 
+
 class TwitterCell: UITableViewCell {
     @IBOutlet weak var profileImage: UIImageView!
     @IBOutlet weak var nameLbl: UILabel!
@@ -18,6 +19,8 @@ class TwitterCell: UITableViewCell {
     @IBOutlet weak var replyBtn: UIButton!
     @IBOutlet weak var retwitterBtn: UIButton!
     @IBOutlet weak var favoriteBtn: UIButton!
+    
+    var index: Int!
 
 
     override func awakeFromNib() {
@@ -31,16 +34,18 @@ class TwitterCell: UITableViewCell {
         // Configure the view for the selected state
     }
 
-    
     var twitter: Twitter?{
         didSet{
-            self.faceImage((twitter?.user?.profileImageUrl)!)
-            self.nameLbl.text = twitter?.user!.name
-            self.usernameLbl.text = twitter!.user!.screenName
-            self.twitterTextLbl.text = twitter!.text
-            self.timeLbl.text = twitter?.createdAt?.shortTimeAgoSinceNow()
-            self.favoriteBtn.selected = twitter!.favorited
-//            self.retwitterBtn.selected = (twitter?.rettwittered)!
+            replyBtn.tag = index
+            retwitterBtn.tag = index
+            favoriteBtn.tag = index
+            faceImage((twitter?.user?.profileImageUrl)!)
+            nameLbl.text = twitter?.user!.name
+            usernameLbl.text = twitter!.user!.screenName
+            twitterTextLbl.text = twitter!.text
+            timeLbl.text = twitter?.createdAt?.shortTimeAgoSinceNow()
+            favoriteBtn.selected = twitter!.favorited
+            retwitterBtn.selected = (twitter?.retweeted)!
         }
     }
     func faceImage(url: NSURL){
@@ -63,4 +68,5 @@ class TwitterCell: UITableViewCell {
                 // do something for the failure condition
         })
     }
+
 }

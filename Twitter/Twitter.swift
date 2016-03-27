@@ -42,7 +42,7 @@ class Twitter: NSObject {
         self.createdAtString = formatter.stringFromDate(self.createdAt!)
     }
     
-    class func tweetsWithArray(array: [NSDictionary]) -> [Twitter] {
+    class func twittersWithArray(array: [NSDictionary]) -> [Twitter] {
         var twitters = [Twitter]()
         for data in array {
             twitters.append(Twitter(data: data))

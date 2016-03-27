@@ -8,7 +8,7 @@
 
 import UIKit
 
-class HomeScreen: UIViewController {
+class HomeScreen: UIViewController{
     @IBOutlet weak var tbvHome: UITableView!
     
     var refreshControl :UIRefreshControl!
@@ -16,10 +16,9 @@ class HomeScreen: UIViewController {
     var lastTwitterID = 0
     var loadMore = false
     var loadMoreView : InfiniteScrollActivityView!
-
-    
     let tweetsCount = 20
     
+
     override func viewDidLoad() {
         super.viewDidLoad()
         tbvHome.estimatedRowHeight = 100
@@ -40,6 +39,8 @@ class HomeScreen: UIViewController {
         super.didReceiveMemoryWarning()
     }
 
+    @IBAction func onPostNewTwitter(sender: AnyObject) {
+    }
     
 // MARK: - privateMethod
     func showMessage(error: NSError){
@@ -100,7 +101,66 @@ class HomeScreen: UIViewController {
     @IBAction func onLogout(sender: AnyObject) {
         User.currentUser?.logout()
     }
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if (segue.identifier == "disSelectedCell") {
+            let detailsController = segue.destinationViewController as! TwitterDetail
+            let cell = sender as! TwitterCell
+            detailsController.twitter = cell.twitter
+            detailsController.delegateTwitter = self
+        }
+        else
+            if (segue.identifier == "newTweetFromHome") {
+                let tweet = segue.destinationViewController as! Tweet
+                tweet.delegateTweet = self
+        }
+            else if(segue.identifier == "cellSegue"){
+                let tweet = segue.destinationViewController as! Tweet
+                let button = sender as! UIButton
+                tweet.twitter = twitters![button.tag]
+                tweet.delegateTweet = self
+                
+        }
+    }
+    
+// MARK: - ActionFromCell
 
+    @IBAction func reTwitterAction(sender: AnyObject) {
+        let btn = sender as! UIButton
+        let currentTweet = self.twitters![btn.tag]
+        btn.selected = !currentTweet.retweeted
+        if (!currentTweet.retweeted) {
+            TwitterClient.sharedInstance.retweetWithCompletion(currentTweet, completion: { (tweet, error) -> Void in
+                if (tweet != nil) {
+                    self.twitters![btn.tag].retweeted = tweet.retweeted
+                    self.twitters![btn.tag].retweetCount = tweet.retweetCount
+                    btn.selected = tweet.retweeted
+                } else {
+                    btn.selected = currentTweet.retweeted
+                }
+                
+            })
+        }
+
+    }
+    @IBAction func favoriteAction(sender: AnyObject) {
+        let btn = sender as! UIButton
+        let currentTweet = self.twitters![btn.tag]
+        btn.selected = !currentTweet.favorited
+        TwitterClient.sharedInstance.toggleFavoriteTweetWithCompletion(currentTweet,
+            completion: { (tweet, error) -> Void in
+                if (tweet != nil) {
+                    self.twitters![btn.tag].favorited = tweet.favorited
+                    self.twitters![btn.tag].favoritesCount = tweet.favoritesCount
+                } else {
+                    btn.selected = currentTweet.favorited
+                }
+            }
+        )
+        
+    }
+    @IBAction func replyAction(sender: AnyObject) {
+//        self.performSegueWithIdentifier("cellSegue", sender: self)
+    }
 }
 // MARK: - ExtensionTableView
 extension HomeScreen: UITableViewDelegate, UITableViewDataSource{
@@ -110,6 +170,7 @@ extension HomeScreen: UITableViewDelegate, UITableViewDataSource{
     }
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("TwitterCell") as! TwitterCell
+        cell.index = indexPath.row
         cell.twitter = twitters![indexPath.row]
         return cell
     }
@@ -124,9 +185,14 @@ extension HomeScreen: UITableViewDelegate, UITableViewDataSource{
             loadMoreTweets()
         }
     }
-    
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+}
+
+extension HomeScreen: DelegateTwitter{
+    func addTwitter(twitter: Twitter){
+        self.twitters?.insert(twitter, atIndex: 0)
+        self.tbvHome.reloadData()
+    }
+    func updatetwitter(twitter: Twitter){
+        
     }
 }

@@ -13,7 +13,9 @@ let twitterBaseUrl = "https://api.twitter.com"
 let twitterOauthUrl = "https://api.twitter.com/oauth/authorize?oauth_token="
 let verifyCredentialsString = "1.1/account/verify_credentials.json"
 let homeTimelineString = "1.1/statuses/home_timeline.json"
-
+let postTweet = "1.1/statuses/update.json"
+let favoriteCreate = "1.1/favorites/create.json"
+let favoriteDetroy = "1.1/favorites/destroy.json"
 
 
 class TwitterClient: BDBOAuth1SessionManager {
@@ -38,7 +40,7 @@ class TwitterClient: BDBOAuth1SessionManager {
                 let oauthUrl = requestTocken.token
                 UIApplication.sharedApplication().openURL(NSURL(string: twitterOauthUrl + oauthUrl)!)
                 }) { (error: NSError!) -> Void in
-                    print("Fail getting request Token")
+                    TSMessage.showNotificationWithTitle("Fail getting request Token", type: TSMessageNotificationType.Message)
                     self.loginCompletion?(user: nil, error: error)
             }
         }
@@ -48,9 +50,8 @@ class TwitterClient: BDBOAuth1SessionManager {
         self.fetchAccessTokenWithPath("oauth/access_token", method: "POST", requestToken: BDBOAuth1Credential(queryString: url.query), success: { (accessToken: BDBOAuth1Credential!) -> Void in
             TwitterClient.sharedInstance.requestSerializer.saveAccessToken(accessToken)
             self.verifyCredentials()
-            print("Got my access token")
             }) { (error: NSError!) -> Void in
-                print("Failed to receive access token")
+                TSMessage.showNotificationWithTitle("Failed to receive access token", type: TSMessageNotificationType.Message)
         }
     }
     
@@ -58,11 +59,13 @@ class TwitterClient: BDBOAuth1SessionManager {
         self.GET(verifyCredentialsString, parameters: nil, progress: { (progess: NSProgress) -> Void in
             }, success: { (sessionDataTask: NSURLSessionDataTask, respone: AnyObject?) -> Void in
                 let user = User(data: respone as! NSDictionary)
+                print("Got my access token")
                 User.currentUser = user
                 print(user.name)
                 self.loginCompletion?(user: user,error: nil)
             }) { (sessionDataTask: NSURLSessionDataTask?, error: NSError) -> Void in
-                print("Fail verifyCredentials")
+                TSMessage.showNotificationWithTitle("Fail verifyCredentials", type: TSMessageNotificationType.Message)
+                User.currentUser = nil
                 self.loginCompletion?(user: nil, error: error)
         }
     }
@@ -74,9 +77,52 @@ class TwitterClient: BDBOAuth1SessionManager {
                 let twitters = Twitter.twittersWithArray(respone as! [NSDictionary])
                 completion(twitters: twitters, error: nil)
             }) { (sectionDataTask: NSURLSessionDataTask?, error: NSError) -> Void in
-                 completion(twitters: nil, error: error)
+                completion(twitters: nil, error: error)
+                TSMessage.showNotificationWithTitle("Get HomeTimeline Fail", type: TSMessageNotificationType.Message)
         }
         
     }
+    func postTweetWithCompletion(text: String, replyId: Int?, completion: (twitter: Twitter!, error: NSError!) -> Void) {
+        var params = ["status": text]
+        if (replyId != nil) {
+            params.updateValue("\(replyId!)", forKey: "in_reply_to_status_id")
+        }
+        self.POST(postTweet, parameters: params, progress: { (progess: NSProgress) -> Void in
+            
+            }, success: { (sessionDataTask: NSURLSessionDataTask, response: AnyObject?) -> Void in
+                let twitter = Twitter(data: response as! NSDictionary)
+                completion(twitter: twitter, error: nil)
+            }) { (sessionDataTask: NSURLSessionDataTask?, error: NSError) -> Void in
+                completion(twitter: nil,error: error)
+                TSMessage.showNotificationWithTitle("PostTweet Fail", type: TSMessageNotificationType.Message)
+        }
+    }
     
+    func toggleFavoriteTweetWithCompletion(twitter: Twitter, completion: (twitter: Twitter!, error: NSError!) -> Void) {
+        let params = ["id": twitter.id]
+        var url = favoriteCreate
+        if (twitter.favorited == true) {
+            url = favoriteDetroy
+        }
+        self.POST(url, parameters: params, progress: { (progess: NSProgress) -> Void in
+            }, success: { (sessionTask: NSURLSessionDataTask, response: AnyObject?) -> Void in
+                let twitter = Twitter(data: response as! NSDictionary)
+                completion(twitter: twitter, error: nil)
+            }) { (sessionTask: NSURLSessionDataTask?, error: NSError) -> Void in
+                completion(twitter: nil, error: error)
+                TSMessage.showNotificationWithTitle("Favorite Fail", type: TSMessageNotificationType.Message)
+        }
+    }
+    func retweetWithCompletion(twitter: Twitter, completion: (twitter: Twitter!, error: NSError!) -> Void) {
+        let url = "/1.1/statuses/retweet/\(twitter.id).json"
+        self.POST(url, parameters: nil, progress: { (progess: NSProgress) -> Void in
+            }, success: { (sessionTask: NSURLSessionDataTask, response: AnyObject?) -> Void in
+                let twitter = Twitter(data: response as! NSDictionary)
+                completion(twitter: twitter, error: nil)
+            }) { (sessionTag: NSURLSessionDataTask?, error: NSError) -> Void in
+                TSMessage.showNotificationWithTitle("Reweet Fail!", type: TSMessageNotificationType.Message)
+                completion(twitter: nil, error: error)
+        }
+        
+    }
 }
