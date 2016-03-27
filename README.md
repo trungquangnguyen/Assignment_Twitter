@@ -44,10 +44,15 @@ Here's a walkthrough of implemented user stories:
 Describe any challenges encountered while building the app.
 ## Use Library
 'AFNetworking', '~> 3.0'
+
 "BDBOAuth1Manager"
+
 "DateTools"
+
 "MBProgressHUD"
+
 "TSMessages"
+
 ## License
 
     Copyright [yyyy] [name of copyright owner]
