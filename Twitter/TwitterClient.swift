@@ -64,7 +64,6 @@ class TwitterClient: BDBOAuth1SessionManager {
                 print(user.name)
                 self.loginCompletion?(user: user,error: nil)
             }) { (sessionDataTask: NSURLSessionDataTask?, error: NSError) -> Void in
-                TSMessage.showNotificationWithTitle("Fail verifyCredentials", type: TSMessageNotificationType.Message)
                 User.currentUser = nil
                 self.loginCompletion?(user: nil, error: error)
         }
@@ -78,7 +77,7 @@ class TwitterClient: BDBOAuth1SessionManager {
                 completion(twitters: twitters, error: nil)
             }) { (sectionDataTask: NSURLSessionDataTask?, error: NSError) -> Void in
                 completion(twitters: nil, error: error)
-                TSMessage.showNotificationWithTitle("Get HomeTimeline Fail", type: TSMessageNotificationType.Message)
+                TSMessage.showNotificationWithTitle("Request Fail", type: TSMessageNotificationType.Message)
         }
         
     }

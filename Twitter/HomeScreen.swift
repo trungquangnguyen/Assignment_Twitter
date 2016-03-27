@@ -92,9 +92,9 @@ class HomeScreen: UIViewController{
                 if (lastTwitter != nil) {
                     self.lastTwitterID = lastTwitter!.id
                 }
-                self.loadMoreView!.stopAnimating()
-                self.loadMore = false
             }
+            self.loadMoreView!.stopAnimating()
+            self.loadMore = false
         }
     }
     
