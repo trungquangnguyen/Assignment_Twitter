@@ -127,8 +127,8 @@ class HomeScreen: UIViewController{
     @IBAction func reTwitterAction(sender: AnyObject) {
         let btn = sender as! UIButton
         let currentTweet = self.twitters![btn.tag]
-        btn.selected = !currentTweet.retweeted
         if (!currentTweet.retweeted) {
+            btn.selected = !currentTweet.retweeted
             TwitterClient.sharedInstance.retweetWithCompletion(currentTweet, completion: { (tweet, error) -> Void in
                 if (tweet != nil) {
                     self.twitters![btn.tag].retweeted = tweet.retweeted
@@ -193,6 +193,17 @@ extension HomeScreen: DelegateTwitter{
         self.tbvHome.reloadData()
     }
     func updatetwitter(twitter: Twitter){
-        
+        let arr = NSMutableArray()
+        var index = 0
+        for var i = 0; i < self.twitters?.count; i++ {
+            if twitters![i].id == twitter.id {
+                arr.addObject(twitter)
+                index = i
+            }else{
+                arr.addObject(twitters![i])
+            }
+        }
+        self.twitters = arr.copy() as? [Twitter];
+        tbvHome.reloadRowsAtIndexPaths([NSIndexPath(forRow: index, inSection: 0)], withRowAnimation: UITableViewRowAnimation.Automatic)
     }
 }

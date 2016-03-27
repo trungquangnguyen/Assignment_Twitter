@@ -72,14 +72,15 @@ class TwitterDetail: UIViewController {
     }
 
     @IBAction func onRetwitter(sender: AnyObject) {
-
-        retwitterBtn.selected = !self.twitter.retweeted
         if (!self.twitter.retweeted) {
+            retwitterBtn.selected = !self.twitter.retweeted
             TwitterClient.sharedInstance.retweetWithCompletion(self.twitter, completion: { (tweet, error) -> Void in
                 if (tweet != nil) {
                     self.twitter!.retweeted = tweet.retweeted
                     self.twitter.retweetCount = tweet.retweetCount
                     self.retwitterBtn.selected = tweet.retweeted
+                    self.retwitterCoung.text = "\( tweet.retweetCount)"
+                    self.delegateTwitter.updatetwitter(tweet)
                 } else {
                     self.retwitterBtn.selected = self.twitter.retweeted
                 }
@@ -95,6 +96,8 @@ class TwitterDetail: UIViewController {
                 if (tweet != nil) {
                     self.twitter.favorited = tweet.favorited
                     self.twitter.favoritesCount = tweet.favoritesCount
+                    self.favoritesCount.text = "\( tweet.favoritesCount)"
+                    self.delegateTwitter.updatetwitter(tweet)
                 } else {
                     self.favoriteBtn.selected = self.twitter.favorited
                 }
