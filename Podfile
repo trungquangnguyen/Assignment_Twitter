@@ -6,5 +6,7 @@
 target 'Twitter' do
 pod 'AFNetworking', '~> 3.0'
 pod "BDBOAuth1Manager"
+pod "DateTools"
+pod "MBProgressHUD"
 end
 

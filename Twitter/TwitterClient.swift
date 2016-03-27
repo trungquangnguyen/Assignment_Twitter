@@ -67,14 +67,14 @@ class TwitterClient: BDBOAuth1SessionManager {
         }
     }
     
-    func homeTimelineWithParams(params: Dictionary<String, String>?, completion: (tweets: [Twitter]!, error: NSError!) -> ()) {
+    func homeTimelineWithParams(params: Dictionary<String, String>?, completion: (twitters: [Twitter]!, error: NSError!) -> ()) {
         self.GET(homeTimelineString, parameters: params, progress: { (progess: NSProgress) -> Void in
             
             }, success: { (sectionDataTask: NSURLSessionDataTask, respone: AnyObject?) -> Void in
-                let twitters = Twitter.tweetsWithArray(respone as! [NSDictionary])
-                completion(tweets: twitters, error: nil)
+                let twitters = Twitter.twittersWithArray(respone as! [NSDictionary])
+                completion(twitters: twitters, error: nil)
             }) { (sectionDataTask: NSURLSessionDataTask?, error: NSError) -> Void in
-                 completion(tweets: nil, error: error)
+                 completion(twitters: nil, error: error)
         }
         
     }

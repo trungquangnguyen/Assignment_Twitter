@@ -15,6 +15,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "userDidLogout", name: userDidLogoutNotification, object: nil)
         if (User.currentUser != nil) {
             let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("NavigationControllerHomeScreen") as UIViewController
             window?.rootViewController = vc
@@ -48,5 +49,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return true
     }
 
+    
+    func userDidLogout() {
+        let vc = UIStoryboard(name: "Main", bundle: nil).instantiateInitialViewController()! as UIViewController
+        window?.rootViewController = vc
+    }
 }
 
