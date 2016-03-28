@@ -36,6 +36,7 @@ class Twitter: NSObject {
         }
         // warningformat day same region*/
         let formatter = NSDateFormatter()
+        formatter.locale = NSLocale(localeIdentifier: "en_US")
         formatter.dateFormat = "EEE MMM dd HH:mm:ss Z yyyy"
         self.createdAt = formatter.dateFromString(self.createdAtString!)
         formatter.dateFormat = "MMM d hh:mm a"

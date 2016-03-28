@@ -42,7 +42,6 @@
 		107A5C6E1CA70A6C001633C5 /* TwitterCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 107A5C6D1CA70A6C001633C5 /* TwitterCell.swift */; };
 		10B17A341CA81B3D00372FA3 /* Untitled.gif in Resources */ = {isa = PBXBuildFile; fileRef = 10B17A331CA81B3D00372FA3 /* Untitled.gif */; };
 		69FBDBA877FBC16FE3CEB676 /* libPods-Twitter.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6A7AD5C038BC9194BA9E51DE /* libPods-Twitter.a */; };
-		C8A9749B178D599117CA1BD1 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 897962681478E17D50FF68F6 /* libPods.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -86,7 +85,6 @@
 		10B17A331CA81B3D00372FA3 /* Untitled.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = Untitled.gif; sourceTree = "<group>"; };
 		618F64B6C26BA1A25DE2A57B /* Pods-Twitter.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Twitter.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Twitter/Pods-Twitter.debug.xcconfig"; sourceTree = "<group>"; };
 		6A7AD5C038BC9194BA9E51DE /* libPods-Twitter.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Twitter.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		897962681478E17D50FF68F6 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -94,7 +92,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C8A9749B178D599117CA1BD1 /* libPods.a in Frameworks */,
 				69FBDBA877FBC16FE3CEB676 /* libPods-Twitter.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -222,7 +219,6 @@
 		5616EED711556BF6FB2003DF /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				897962681478E17D50FF68F6 /* libPods.a */,
 				6A7AD5C038BC9194BA9E51DE /* libPods-Twitter.a */,
 			);
 			name = Frameworks;
